@@ -16,7 +16,7 @@ class _TaskScreenState extends State<TaskScreen> {
       title: 'Arrange Pickup',
       assignee: 'Sandhya',
       priority: 'High',
-      status: TaskStatus.Started, // Overdue - 10h 5m
+      status: TaskStatus.Started,
       startDate: DateTime(2025, 8, 10),
       dueDate: DateTime(2025, 8, 7),
     ),
@@ -25,7 +25,7 @@ class _TaskScreenState extends State<TaskScreen> {
       title: 'Adhoc Task',
       assignee: 'Arman',
       priority: 'Medium',
-      status: TaskStatus.Started, // Overdue - 16h 4m
+      status: TaskStatus.Started,
       startDate: DateTime(2025, 8, 12),
       dueDate: DateTime(2025, 8, 7),
     ),
@@ -34,7 +34,7 @@ class _TaskScreenState extends State<TaskScreen> {
       title: 'Collect Payment',
       assignee: 'Sandhya',
       priority: 'High',
-      status: TaskStatus.Started, // Overdue - 17h 2m
+      status: TaskStatus.Started,
       startDate: DateTime(2025, 8, 15),
       dueDate: DateTime(2025, 8, 7),
     ),
@@ -43,7 +43,7 @@ class _TaskScreenState extends State<TaskScreen> {
       title: 'Arrange Delivery',
       assignee: 'Prashant',
       priority: 'Low',
-      status: TaskStatus.Completed, // Completed: Aug 21
+      status: TaskStatus.Completed,
       startDate: DateTime(2025, 8, 20),
       dueDate: DateTime(2025, 8, 21),
     ),
@@ -52,7 +52,7 @@ class _TaskScreenState extends State<TaskScreen> {
       title: 'Share Company Profile',
       assignee: 'Asif Khan K',
       priority: 'Medium',
-      status: TaskStatus.Completed, // Completed: Aug 23
+      status: TaskStatus.Completed,
       startDate: DateTime(2025, 8, 22),
       dueDate: DateTime(2025, 8, 23),
     ),
@@ -61,7 +61,7 @@ class _TaskScreenState extends State<TaskScreen> {
       title: 'Add Followup',
       assignee: 'Avik',
       priority: 'Medium',
-      status: TaskStatus.Completed, // Completed: Aug 26
+      status: TaskStatus.Completed,
       startDate: DateTime(2025, 8, 25),
       dueDate: DateTime(2025, 8, 26),
     ),
@@ -70,7 +70,7 @@ class _TaskScreenState extends State<TaskScreen> {
       title: 'Convert Enquiry',
       assignee: 'Prashant',
       priority: 'Low',
-      status: TaskStatus.NotStarted, // Due in 2 days (Aug 28)
+      status: TaskStatus.NotStarted,
       startDate: DateTime(2025, 8, 28),
       dueDate: DateTime(2025, 8, 30),
     ),
@@ -79,7 +79,7 @@ class _TaskScreenState extends State<TaskScreen> {
       title: 'Arrange Pickup',
       assignee: 'Prashant',
       priority: 'High',
-      status: TaskStatus.NotStarted, // Due Tomorrow (Sep 1)
+      status: TaskStatus.NotStarted,
       startDate: DateTime(2025, 9, 1),
       dueDate: DateTime(2025, 9, 2),
     ),
@@ -96,7 +96,43 @@ class _TaskScreenState extends State<TaskScreen> {
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
             itemCount: sortedTasks.length,
-            itemBuilder: (context, value) => buildTaskCard(sortedTasks[value]),
+            itemBuilder: (context, value) => buildTaskCard(
+              sortedTasks[value],
+              onStartTask: () {
+                setState(() {
+                  demoTasks[value].status = TaskStatus.Started;
+                  demoTasks[value].startDate = DateTime.now();
+                });
+              },
+              onMarkComplete: () {
+                setState(() {
+                  demoTasks[value].status = TaskStatus.Completed;
+                });
+              },
+              onEditStart: () async {
+                DateTime? picked = await showDatePicker(
+                  context: context,
+                  initialDate: demoTasks[value].startDate,
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2100),
+                );
+                setState(() {
+                  demoTasks[value].startDate =
+                      picked ?? demoTasks[value].startDate;
+                });
+              },
+              onEditDeadline: () async {
+                DateTime? picked = await showDatePicker(
+                  context: context,
+                  initialDate: demoTasks[value].dueDate,
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2100),
+                );
+                setState(() {
+                  demoTasks[value].dueDate = picked ?? demoTasks[value].dueDate;
+                });
+              },
+            ),
           ),
         ),
       ),

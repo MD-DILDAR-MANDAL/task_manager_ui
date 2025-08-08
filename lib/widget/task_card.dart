@@ -4,11 +4,17 @@ import 'package:intl/intl.dart';
 
 import 'package:task_manager_ui/model/task_data.dart';
 
-Widget buildTaskCard(Task task) {
+Widget buildTaskCard(
+  Task task, {
+  VoidCallback? onStartTask,
+  VoidCallback? onMarkComplete,
+  VoidCallback? onEditStart,
+  VoidCallback? onEditDeadline,
+}) {
   Color? statusColor;
   Color? barColor;
   Widget? actionButton;
-  Widget? editIcon;
+  Widget? editStart;
   Widget? editDeadLine;
   String statusLabel = '';
   String startStatus = '';
@@ -17,16 +23,17 @@ Widget buildTaskCard(Task task) {
     statusColor = Colors.orange;
 
     editDeadLine = GestureDetector(
+      onTap: onEditDeadline,
       child: Icon(Icons.edit_square, size: 18, color: Colors.grey),
-      onTap: () {},
     );
 
-    editIcon = GestureDetector(
+    editStart = GestureDetector(
+      onTap: onEditStart,
       child: Icon(Icons.edit_square, size: 18, color: Colors.grey),
-      onTap: () {},
     );
 
     actionButton = GestureDetector(
+      onTap: onStartTask,
       child: Row(
         children: [
           Icon(Icons.play_circle, size: 18, color: Colors.deepPurpleAccent),
@@ -39,7 +46,6 @@ Widget buildTaskCard(Task task) {
           ),
         ],
       ),
-      onTap: () {},
     );
 
     statusLabel = 'Due in ${daysUntil(task.dueDate)} days';
@@ -53,11 +59,12 @@ Widget buildTaskCard(Task task) {
     startStatus = "started: ${formatDate(task.startDate)}";
 
     editDeadLine = GestureDetector(
+      onTap: onEditDeadline,
       child: Icon(Icons.edit_square, size: 18, color: Colors.grey),
-      onTap: () {},
     );
 
     actionButton = GestureDetector(
+      onTap: onMarkComplete,
       child: Row(
         children: [
           Icon(Icons.done, size: 18, color: Colors.green),
@@ -67,7 +74,6 @@ Widget buildTaskCard(Task task) {
           ),
         ],
       ),
-      onTap: () {},
     );
     statusLabel = task.dueDate.isBefore(DateTime.now())
         ? 'Overdue - '
@@ -190,7 +196,7 @@ Widget buildTaskCard(Task task) {
                                   "$startStatus  ",
                                   style: TextStyle(color: Colors.blueGrey),
                                 ),
-                                if (editIcon != null) editIcon,
+                                if (editStart != null) editStart,
                               ],
                             ),
                             if (actionButton != null) actionButton,
