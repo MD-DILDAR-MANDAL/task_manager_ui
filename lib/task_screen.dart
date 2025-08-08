@@ -12,70 +12,79 @@ class TaskScreen extends StatefulWidget {
 class _TaskScreenState extends State<TaskScreen> {
   final List<Task> demoTasks = [
     Task(
-      id: 'T-001',
-      title: 'Design Login Screen',
-      assignee: 'Alice',
+      id: 'Order-1043',
+      title: 'Arrange Pickup',
+      assignee: 'Sandhya',
       priority: 'High',
-      status: TaskStatus.NotStarted,
-      startDate: DateTime(2025, 8, 8),
-      dueDate: DateTime(2025, 8, 10),
-    ),
-    Task(
-      id: 'T-002',
-      title: 'Set Up Backend API',
-      assignee: 'Bob',
-      priority: 'Medium',
-      status: TaskStatus.Started,
-      startDate: DateTime(2025, 8, 7),
-      dueDate: DateTime(2025, 8, 11),
-    ),
-    Task(
-      id: 'T-003',
-      title: 'Write Unit Tests',
-      assignee: 'Charlie',
-      priority: 'Low',
-      status: TaskStatus.Completed,
-      startDate: DateTime(2025, 8, 5),
-      dueDate: DateTime(2025, 8, 8),
-    ),
-    Task(
-      id: 'T-006',
-      title: 'Write Unit Tests',
-      assignee: 'Charlie',
-      priority: 'Low',
-      status: TaskStatus.Completed,
-      startDate: DateTime(2025, 8, 5),
-      dueDate: DateTime(2025, 8, 5),
-    ),
-    Task(
-      id: 'T-004',
-      title: 'Create Splash Screen',
-      assignee: 'Dana',
-      priority: 'Medium',
-      status: TaskStatus.NotStarted,
-      startDate: DateTime(2025, 8, 9),
-      dueDate: DateTime(2025, 8, 13),
-    ),
-    Task(
-      id: 'T-005',
-      title: 'Integrate Firebase',
-      assignee: 'Eve',
-      priority: 'High',
-      status: TaskStatus.Started,
-      startDate: DateTime(2025, 8, 6),
-      dueDate: DateTime(2025, 8, 10),
-    ),
-
-    Task(
-      id: 'T-006',
-      title: 'Integrate Firebase',
-      assignee: 'Eve',
-      priority: 'High',
-      status: TaskStatus.Started,
-      startDate: DateTime(2025, 8, 6),
+      status: TaskStatus.Started, // Overdue - 10h 5m
+      startDate: DateTime(2025, 8, 10),
       dueDate: DateTime(2025, 8, 7),
     ),
+    Task(
+      id: 'Entity-2559',
+      title: 'Adhoc Task',
+      assignee: 'Arman',
+      priority: 'Medium',
+      status: TaskStatus.Started, // Overdue - 16h 4m
+      startDate: DateTime(2025, 8, 12),
+      dueDate: DateTime(2025, 8, 7),
+    ),
+    Task(
+      id: 'Order-1020',
+      title: 'Collect Payment',
+      assignee: 'Sandhya',
+      priority: 'High',
+      status: TaskStatus.Started, // Overdue - 17h 2m
+      startDate: DateTime(2025, 8, 15),
+      dueDate: DateTime(2025, 8, 7),
+    ),
+    Task(
+      id: 'Order-194',
+      title: 'Arrange Delivery',
+      assignee: 'Prashant',
+      priority: 'Low',
+      status: TaskStatus.Completed, // Completed: Aug 21
+      startDate: DateTime(2025, 8, 20),
+      dueDate: DateTime(2025, 8, 21),
+    ),
+    Task(
+      id: 'Entity-2184',
+      title: 'Share Company Profile',
+      assignee: 'Asif Khan K',
+      priority: 'Medium',
+      status: TaskStatus.Completed, // Completed: Aug 23
+      startDate: DateTime(2025, 8, 22),
+      dueDate: DateTime(2025, 8, 23),
+    ),
+    Task(
+      id: 'Entity-472',
+      title: 'Add Followup',
+      assignee: 'Avik',
+      priority: 'Medium',
+      status: TaskStatus.Completed, // Completed: Aug 26
+      startDate: DateTime(2025, 8, 25),
+      dueDate: DateTime(2025, 8, 26),
+    ),
+    Task(
+      id: 'Enquiry-3563',
+      title: 'Convert Enquiry',
+      assignee: 'Prashant',
+      priority: 'Low',
+      status: TaskStatus.NotStarted, // Due in 2 days (Aug 28)
+      startDate: DateTime(2025, 8, 28),
+      dueDate: DateTime(2025, 8, 30),
+    ),
+    Task(
+      id: 'Order-176',
+      title: 'Arrange Pickup',
+      assignee: 'Prashant',
+      priority: 'High',
+      status: TaskStatus.NotStarted, // Due Tomorrow (Sep 1)
+      startDate: DateTime(2025, 9, 1),
+      dueDate: DateTime(2025, 9, 2),
+    ),
   ];
+
   @override
   Widget build(BuildContext context) {
     List<Task> sortedTasks = List.from(demoTasks);

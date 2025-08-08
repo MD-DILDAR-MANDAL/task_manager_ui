@@ -118,12 +118,13 @@ Widget buildTaskCard(Task task) {
                   Container(width: 6, color: barColor),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                    padding: const EdgeInsets.fromLTRB(8.0, 8, 8.0, 8.0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
@@ -134,12 +135,12 @@ Widget buildTaskCard(Task task) {
                                     color: Colors.deepPurpleAccent,
                                     fontWeight: FontWeight.bold,
                                     decoration: TextDecoration.underline,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                   ),
                                 ),
-                                IconButton(
-                                  icon: Icon(Icons.more_vert, size: 20),
-                                  onPressed: () {},
+                                GestureDetector(
+                                  child: Icon(Icons.more_vert, size: 20),
+                                  onTap: () {},
                                 ),
                               ],
                             ),
