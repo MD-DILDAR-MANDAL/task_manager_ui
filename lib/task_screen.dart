@@ -39,6 +39,15 @@ class _TaskScreenState extends State<TaskScreen> {
       dueDate: DateTime(2025, 8, 8),
     ),
     Task(
+      id: 'T-006',
+      title: 'Write Unit Tests',
+      assignee: 'Charlie',
+      priority: 'Low',
+      status: TaskStatus.Completed,
+      startDate: DateTime(2025, 8, 5),
+      dueDate: DateTime(2025, 8, 5),
+    ),
+    Task(
       id: 'T-004',
       title: 'Create Splash Screen',
       assignee: 'Dana',

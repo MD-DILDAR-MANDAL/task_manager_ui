@@ -9,16 +9,39 @@ Widget buildTaskCard(Task task) {
   Color? barColor;
   Widget? actionButton;
   Widget? editIcon;
+  Widget? editDeadLine;
   String statusLabel = '';
   String startStatus = '';
 
   if (task.status == TaskStatus.NotStarted) {
     statusColor = Colors.orange;
-    actionButton = ElevatedButton(onPressed: () {}, child: Text("Start Task"));
-    editIcon = IconButton(
-      icon: Icon(Icons.edit_square, size: 18, color: Colors.grey),
-      onPressed: () {},
+
+    editDeadLine = GestureDetector(
+      child: Icon(Icons.edit_square, size: 18, color: Colors.grey),
+      onTap: () {},
     );
+
+    editIcon = GestureDetector(
+      child: Icon(Icons.edit_square, size: 18, color: Colors.grey),
+      onTap: () {},
+    );
+
+    actionButton = GestureDetector(
+      child: Row(
+        children: [
+          Icon(Icons.play_circle, size: 18, color: Colors.deepPurpleAccent),
+          Text(
+            "  Start Task",
+            style: TextStyle(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+      onTap: () {},
+    );
+
     statusLabel = 'Due in ${daysUntil(task.dueDate)} days';
     startStatus = "Start: ${formatDate(DateTime.now())}";
     barColor = Colors.grey;
@@ -26,15 +49,25 @@ Widget buildTaskCard(Task task) {
     statusColor = task.dueDate.isBefore(DateTime.now())
         ? Colors.red
         : Colors.green;
-    barColor = Colors.blue;
+    barColor = Colors.deepPurpleAccent;
     startStatus = "started: ${formatDate(task.startDate)}";
-    actionButton = ElevatedButton(
-      onPressed: () {},
-      child: Text("Mark as Complete"),
+
+    editDeadLine = GestureDetector(
+      child: Icon(Icons.edit_square, size: 18, color: Colors.grey),
+      onTap: () {},
     );
-    editIcon = IconButton(
-      icon: Icon(Icons.edit_square, size: 18, color: Colors.grey),
-      onPressed: () {},
+
+    actionButton = GestureDetector(
+      child: Row(
+        children: [
+          Icon(Icons.done, size: 18, color: Colors.green),
+          Text(
+            " Mark as complete",
+            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+      onTap: () {},
     );
     statusLabel = task.dueDate.isBefore(DateTime.now())
         ? 'Overdue - '
@@ -57,107 +90,133 @@ Widget buildTaskCard(Task task) {
     overDueTime = '${days}d ${hours}h ${minutes}m';
   }
 
-  return Card(
-    margin: EdgeInsets.zero,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-    elevation: 0,
-    child: Column(
-      children: [
-        IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (task.status == TaskStatus.NotStarted)
-                DottedBorder(
+  return Opacity(
+    opacity: task.status == TaskStatus.Completed ? 0.7 : 1.0,
+    child: Card(
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      elevation: 0,
+      child: Column(
+        children: [
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (task.status == TaskStatus.NotStarted)
+                  DottedBorder(
+                    options: CustomPathDottedBorderOptions(
+                      color: barColor,
+                      dashPattern: [26, 11],
+                      strokeWidth: 5,
+                      customPath: (size) => Path()
+                        ..moveTo(3, 0)
+                        ..relativeLineTo(0, size.height),
+                    ),
+                    child: Container(),
+                  )
+                else
+                  Container(width: 6, color: barColor),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  task.id,
+                                  style: TextStyle(
+                                    color: Colors.deepPurpleAccent,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.more_vert, size: 20),
+                                  onPressed: () {},
+                                ),
+                              ],
+                            ),
+                            Text(task.title, style: TextStyle(fontSize: 15)),
+                            Row(
+                              children: [
+                                Text(
+                                  task.assignee,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  task.priority == "High"
+                                      ? '  ${task.priority} priority'
+                                      : "",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "$statusLabel$overDueTime  ",
+                                  style: TextStyle(
+                                    color: statusColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                if (editDeadLine != null) editDeadLine,
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "$startStatus  ",
+                                  style: TextStyle(color: Colors.blueGrey),
+                                ),
+                                if (editIcon != null) editIcon,
+                              ],
+                            ),
+                            if (actionButton != null) actionButton,
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          task.status == TaskStatus.NotStarted
+              ? DottedBorder(
                   options: CustomPathDottedBorderOptions(
                     color: barColor,
-                    dashPattern: [26, 20],
-                    strokeWidth: 8,
+                    dashPattern: [20, 6],
+                    strokeWidth: 1,
                     customPath: (size) => Path()
                       ..moveTo(0, 0)
-                      ..relativeLineTo(0, size.height),
+                      ..relativeLineTo(size.width, 0),
                   ),
                   child: Container(),
                 )
-              else
-                Container(width: 6, color: barColor),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                task.id,
-                                style: TextStyle(
-                                  color: const Color.fromARGB(255, 24, 95, 247),
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.more_vert, size: 20),
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
-                          Text(task.title),
-                          Row(
-                            children: [
-                              Text('${task.assignee}'),
-                              Text(
-                                '  ${task.priority} priority',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "$statusLabel$overDueTime",
-                                style: TextStyle(
-                                  color: statusColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              if (editIcon != null) editIcon,
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                startStatus,
-                                style: TextStyle(color: statusColor),
-                              ),
-                              if (editIcon != null) editIcon,
-                            ],
-                          ),
-                          if (actionButton != null) actionButton,
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Divider(height: 1),
-      ],
+              : Divider(height: 1),
+        ],
+      ),
     ),
   );
 }
