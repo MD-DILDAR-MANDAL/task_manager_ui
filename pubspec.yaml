@@ -9,6 +9,7 @@ environment:
   sdk: ^3.8.1
 
 dependencies:
+  dotted_border: ^3.1.0
   flutter:
     sdk: flutter
   intl: ^0.20.2

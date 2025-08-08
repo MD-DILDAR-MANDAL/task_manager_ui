@@ -1,4 +1,4 @@
-enum TaskStatus { NotStarted, Started, Completed }
+enum TaskStatus { Started, Completed, NotStarted }
 
 class Task {
   String id;
