@@ -10,7 +10,7 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
-  final List<Task> demoTasks = [
+  List<Task> demoTasks = [
     Task(
       id: 'Order-1043',
       title: 'Arrange Pickup',
@@ -96,43 +96,49 @@ class _TaskScreenState extends State<TaskScreen> {
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
             itemCount: sortedTasks.length,
-            itemBuilder: (context, value) => buildTaskCard(
-              sortedTasks[value],
-              onStartTask: () {
-                setState(() {
-                  demoTasks[value].status = TaskStatus.Started;
-                  demoTasks[value].startDate = DateTime.now();
-                });
-              },
-              onMarkComplete: () {
-                setState(() {
-                  demoTasks[value].status = TaskStatus.Completed;
-                });
-              },
-              onEditStart: () async {
-                DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: demoTasks[value].startDate,
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                );
-                setState(() {
-                  demoTasks[value].startDate =
-                      picked ?? demoTasks[value].startDate;
-                });
-              },
-              onEditDeadline: () async {
-                DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: demoTasks[value].dueDate,
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                );
-                setState(() {
-                  demoTasks[value].dueDate = picked ?? demoTasks[value].dueDate;
-                });
-              },
-            ),
+            itemBuilder: (context, value) {
+              final correctIdx = demoTasks.indexWhere(
+                (t) => t.id == sortedTasks[value].id,
+              );
+              return buildTaskCard(
+                sortedTasks[value],
+                onStartTask: () {
+                  setState(() {
+                    demoTasks[correctIdx].status = TaskStatus.Started;
+                    demoTasks[correctIdx].startDate = DateTime.now();
+                  });
+                },
+                onMarkComplete: () {
+                  setState(() {
+                    demoTasks[correctIdx].status = TaskStatus.Completed;
+                  });
+                },
+                onEditStart: () async {
+                  DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: demoTasks[correctIdx].startDate,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  setState(() {
+                    demoTasks[correctIdx].startDate =
+                        picked ?? demoTasks[correctIdx].startDate;
+                  });
+                },
+                onEditDeadline: () async {
+                  DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: demoTasks[correctIdx].dueDate,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  setState(() {
+                    demoTasks[correctIdx].dueDate =
+                        picked ?? demoTasks[correctIdx].dueDate;
+                  });
+                },
+              );
+            },
           ),
         ),
       ),
